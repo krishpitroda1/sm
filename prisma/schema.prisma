@@ -1,0 +1,47 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String?  @unique
+  phone     String   @unique
+  flatNumber String
+  role      String   @default("MEMBER") // ADMIN, MEMBER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payments  Payment[]
+}
+
+model MaintenanceRun {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  month     Int
+  year      Int
+  amount    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payments  Payment[]
+}
+
+model Payment {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  user          User     @relation(fields: [userId], references: [id])
+  runId         String   @db.ObjectId
+  run           MaintenanceRun @relation(fields: [runId], references: [id])
+  amount        Float
+  status        String   @default("PENDING") // PENDING, COMPLETED, REJECTED
+  transactionId String?
+  receiptUrl    String?
+  paymentDate   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
