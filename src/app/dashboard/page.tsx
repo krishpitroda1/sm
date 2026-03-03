@@ -65,8 +65,8 @@ export default function Dashboard() {
             getActiveRunsForMember(userId),
             getMemberPayments(userId),
         ])
-        if (runsRes.success) setActiveRuns(runsRes.data || [])
-        if (paymentsRes.success) setPayments(paymentsRes.data || [])
+        if (runsRes.success && runsRes.data) setActiveRuns(runsRes.data as any[])
+        if (paymentsRes.success && paymentsRes.data) setPayments(paymentsRes.data as any[])
         setLoading(false)
     }
 
