@@ -58,7 +58,13 @@ export default function AdminDashboard() {
 
     return (
         <div className="p-8 space-y-8">
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            <div className="flex items-center justify-between mb-8">
+                <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+                <Button variant="outline" onClick={() => window.location.href = '/'}>
+                    <svg className="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                    Back to Login
+                </Button>
+            </div>
 
             {/* Members Section */}
             <Card>
