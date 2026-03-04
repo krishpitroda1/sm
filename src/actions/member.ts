@@ -39,10 +39,16 @@ export async function createMember(data: { name: string; phone: string; flatNumb
                 role: 'MEMBER',
             },
         })
-        revalidatePath('/admin/members')
+        revalidatePath('/admin')
         return { success: true, data: member }
-    } catch (error) {
-        return { success: false, error: 'Failed to create member' }
+    } catch (error: any) {
+        console.error('[createMember] Error:', JSON.stringify(error, null, 2))
+        // Handle unique constraint violations (Prisma error code P2002)
+        if (error?.code === 'P2002') {
+            const field = error?.meta?.target?.[0] || 'field'
+            return { success: false, error: `A member with this ${field} already exists.` }
+        }
+        return { success: false, error: `Failed to create member: ${error?.message || 'Unknown error'}` }
     }
 }
 

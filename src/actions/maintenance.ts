@@ -13,9 +13,9 @@ export async function createMaintenanceRun(data: {
         const run = await prisma.maintenanceRun.create({ data })
         revalidatePath('/admin')
         return { success: true, data: run }
-    } catch (error) {
-        console.error(error)
-        return { success: false, error: 'Failed to create maintenance run' }
+    } catch (error: any) {
+        console.error('[createMaintenanceRun]', error)
+        return { success: false, error: `Failed to create run: ${error?.message || 'Unknown error'}` }
     }
 }
 
