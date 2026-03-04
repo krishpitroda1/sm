@@ -1,4 +1,3 @@
-import Razorpay from 'razorpay'
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { initiatePayment } from '@/actions/payment'
@@ -7,9 +6,11 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
     try {
+        const RazorpayModule = await import('razorpay')
+        const Razorpay = RazorpayModule.default
         const razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID || 'missing_key_id',
-            key_secret: process.env.RAZORPAY_KEY_SECRET || 'missing_key_secret',
+            key_id: process.env.RAZORPAY_KEY_ID || '',
+            key_secret: process.env.RAZORPAY_KEY_SECRET || '',
         })
 
         const { userId, runId } = await req.json()
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
 
         // Create Razorpay order (amount in paise)
         const order = await razorpay.orders.create({
-            amount: Math.round(run.amount * 100), // Convert ₹ to paise
+            amount: Math.round(run.amount * 100),
             currency: 'INR',
             receipt: paymentRes.data!.id,
             notes: {
