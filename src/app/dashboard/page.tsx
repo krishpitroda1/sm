@@ -178,9 +178,8 @@ export default function Dashboard() {
         setTimeout(() => win.print(), 250)
     }
 
-    const handleCloseReceiptAndRedirect = () => {
+    const handleCloseReceipt = () => {
         setReceiptModal(false)
-        router.push('/')
     }
 
     const handleLogout = () => {
@@ -388,7 +387,7 @@ export default function Dashboard() {
 
             {/* Receipt Modal */}
             <Dialog open={receiptModal} onOpenChange={(open) => {
-                if (!open) handleCloseReceiptAndRedirect()
+                if (!open) handleCloseReceipt()
             }}>
                 <DialogContent className="max-w-md p-0 overflow-y-auto overflow-x-hidden max-h-[90dvh] bg-slate-50 rounded-3xl border-0 shadow-2xl">
                     <DialogHeader className="p-4 md:p-6 bg-white border-b border-slate-100 pb-3 md:pb-4">
@@ -469,8 +468,8 @@ export default function Dashboard() {
                                 <Button onClick={handlePrintReceipt} variant="outline" className="flex-1 rounded-xl h-12 border-slate-200 text-slate-700 hover:bg-slate-100 font-semibold">
                                     <Printer size={18} className="mr-2" /> Print
                                 </Button>
-                                <Button onClick={handleCloseReceiptAndRedirect} className="flex-1 bg-slate-900 hover:bg-slate-800 h-12 rounded-xl text-white shadow-lg shadow-slate-900/20 font-semibold">
-                                    Return home
+                                <Button onClick={handleCloseReceipt} className="flex-1 bg-slate-900 hover:bg-slate-800 h-12 rounded-xl text-white shadow-lg shadow-slate-900/20 font-semibold">
+                                    Done
                                 </Button>
                             </div>
                         </div>
