@@ -45,7 +45,13 @@ export async function createMember(data: { name: string; phone: string; flatNumb
         console.error('[createMember] Error:', JSON.stringify(error, null, 2))
         // Handle unique constraint violations (Prisma error code P2002)
         if (error?.code === 'P2002') {
-            const field = error?.meta?.target?.[0] || 'field'
+            let field = 'record'
+            const targetStr = String(error?.meta?.target || '')
+            if (targetStr.includes('phone')) field = 'phone number'
+            else if (targetStr.includes('email')) field = 'email address'
+            else if (targetStr.includes('flatNumber')) field = 'flat number'
+            else field = 'unique field'
+            
             return { success: false, error: `A member with this ${field} already exists.` }
         }
         return { success: false, error: `Failed to create member: ${error?.message || 'Unknown error'}` }
