@@ -33,9 +33,13 @@ export async function getMemberByLogin(flatNumber: string, phone: string) {
 
 export async function createMember(data: { name: string; phone: string; flatNumber: string; email?: string }) {
     try {
+        // Generate a unique dummy email if not provided, to prevent MongoDB unique index collisions on null
+        const uniqueEmail = data.email || `${data.flatNumber}_${data.phone}@society.local`
+
         const member = await prisma.user.create({
             data: {
                 ...data,
+                email: uniqueEmail,
                 role: 'MEMBER',
             },
         })
